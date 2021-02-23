@@ -180,8 +180,10 @@ python3 app.py
 Navigate to project homepage [http://127.0.0.1:5000/](http://127.0.0.1:5000/) or [http://localhost:5000](http://localhost:5000) 
 
 7. **Development Steps**<br>
-Navigate asdas
 
-asdsad
-
-asdsad
+  1. Code in config.py for database connectivity
+  2. Insert sample data into all 3 tables
+  3. Implement GET methods for both Artists / Venues
+  4. Implement SEARCH methods for both Artists / Venues
+  5. Implement Venue, Artist and Show creation methods
+  6. Implement Edit methods for both Artists / Venues
