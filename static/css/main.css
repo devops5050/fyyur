@@ -21,6 +21,7 @@ a {
   cursor: pointer;
   color: #ff8c3a;
 }
+
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
   background: initial;
   color: initial;
