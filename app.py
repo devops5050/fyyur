@@ -173,12 +173,13 @@ def show_venue(venue_id):
   # print('past shows')
   # print(len(pastshows))
 
+  # Ref: https://knowledge.udacity.com/questions/386723
   for show_item in pastshows:
     pastshows_data.append({
       "artist_id": show_item.artist_id,
       "artist_name": show_item.artist.name,
       "artist_image_link": show_item.artist.image_link,
-      "start_time": show_item.start_time.strftime('%Y-%m-%d %H:%M:%S')
+      "start_time": show_item.start_time.strftime("%m/%d/%Y, %H:%M")
     })
 
   for show_item in futureshows:
@@ -186,7 +187,7 @@ def show_venue(venue_id):
       "artist_id": show_item.artist_id,
       "artist_name": show_item.artist.name,
       "artist_image_link": show_item.artist.image_link,
-      "start_time": show_item.start_time.strftime("%Y-%m-%d %H:%M:%S")    
+      "start_time": show_item.start_time.strftime("%m/%d/%Y, %H:%M")    
     })
 
   data = {
@@ -337,20 +338,16 @@ def edit_artist_submission(artist_id):
     name = request.form.get('name')
     city = request.form.get('city')
     state = request.form.get('state')
-    # address = request.form.get('address')
     phone = request.form.get('phone')
     genres = request.form.getlist('genres')
     facebook_link = request.form.get('facebook_link')
-    # image_link = request.form.get('image_link')
 
     artist.name = name
     artist.city = city
     artist.state = state
-    # artist.address = address
     artist.phone = phone
     artist.genres = genres
     artist.facebook_link = facebook_link
-    # artist.image_link = image_link
 
     db.session.add(artist)
     db.session.commit()
