@@ -233,8 +233,13 @@ def create_venue_submission():
     genres = request.form.getlist('genres')
     facebook_link = request.form['facebook_link']
     image_link = request.form['image_link']
+    website = request.form['website']
+    isseeking= False
+    if request.form.get('isSeeking'):
+      isseeking = True
+    seeking_description = request.form.get('seekingDesc')
 
-    venue = Venue(name=name, city=city, state=state, address=address, phone=phone, genres=genres, facebook_link=facebook_link, image_link=image_link)
+    venue = Venue(name=name, city=city, state=state, address=address, phone=phone, genres=genres, facebook_link=facebook_link, image_link=image_link, website = website, seeking_talent=isseeking, seeking_description=seeking_description)
     db.session.add(venue)
     db.session.commit()
   except:
@@ -334,34 +339,55 @@ def edit_artist_submission(artist_id):
 
   artist = Artist.query.get(artist_id)
 
-  try:
-    name = request.form.get('name')
-    city = request.form.get('city')
-    state = request.form.get('state')
-    phone = request.form.get('phone')
-    genres = request.form.getlist('genres')
-    facebook_link = request.form.get('facebook_link')
+  form = ArtistForm(request.form, meta={'csrf': False})
+  print(form)
+  if form.validate():
+    print('form is valid')
+    try:
+      name = request.form.get('name')
+      city = request.form.get('city')
+      state = request.form.get('state')
+      phone = request.form.get('phone')
+      genres = request.form.getlist('genres')
+      facebook_link = request.form.get('facebook_link')
+      image_link = request.form.get('image_link')
+      website = request.form.get('website')
+      isseeking= False
+      if request.form.get('isSeeking'):
+        isseeking = True
+      seeking_description = request.form.get('seekingDesc')
 
-    artist.name = name
-    artist.city = city
-    artist.state = state
-    artist.phone = phone
-    artist.genres = genres
-    artist.facebook_link = facebook_link
+      artist.name = name
+      artist.city = city
+      artist.state = state
+      artist.phone = phone
+      artist.genres = genres
+      artist.facebook_link = facebook_link
+      image_link = request.form.get('image_link')
+      website = request.form.get('website')
+      artist.image_link = image_link
+      artist.website = website
+      artist.seeking_venue = isseeking
+      artist.seeking_description=seeking_description
 
-    db.session.add(artist)
-    db.session.commit()
-  except:
-    error = True
-    db.session.rollback()
-    print(sys.exc_info())
-  finally:
-    db.session.close()
-  if error:
-    flash('An error occurred. artist ' + request.form['name']+ ' could not be updated.')
-  if not error:
-    flash('Artist ' + request.form.get('name') + ' was successfully updated!')
-
+      db.session.add(artist)
+      db.session.commit()
+    except:
+      error = True
+      db.session.rollback()
+      print(sys.exc_info())
+    finally:
+      db.session.close()
+    if error:
+      flash('An error occurred. artist ' + request.form['name']+ ' could not be updated.')
+    if not error:
+      flash('Artist ' + request.form.get('name') + ' was successfully updated!')
+  else:
+    print('form is not valid')
+    message = []
+    for field, errors in form.errors.items():
+      message.append(field + ' :, '.join(errors))
+      flash(f'Errors: {message}  ')
   return redirect(url_for('show_artist', artist_id=artist_id))
 
 @app.route('/venues/<int:venue_id>/edit', methods=['GET'])
@@ -376,40 +402,58 @@ def edit_venue(venue_id):
 def edit_venue_submission(venue_id):
 
   error = False
+  form = VenueForm(request.form, meta={'csrf': False})
+  print(form)
 
   venue = Venue.query.get(venue_id)
+  if form.validate():
+    print('form is valid')
 
-  try:
-    name = request.form.get('name')
-    city = request.form.get('city')
-    state = request.form.get('state')
-    address = request.form.get('address')
-    phone = request.form.get('phone')
-    genres = request.form.getlist('genres')
-    facebook_link = request.form.get('facebook_link')
-    image_link = request.form.get('image_link')
+    try:
+      name = request.form.get('name')
+      city = request.form.get('city')
+      state = request.form.get('state')
+      address = request.form.get('address')
+      phone = request.form.get('phone')
+      genres = request.form.getlist('genres')
+      facebook_link = request.form.get('facebook_link')
+      image_link = request.form.get('image_link')
+      website = request.form.get('website')
+      isseeking= False
+      if request.form.get('isSeeking'):
+        isseeking = True
+      seeking_description = request.form.get('seekingDesc')
 
-    venue.name = name
-    venue.city = city
-    venue.state = state
-    venue.address = address
-    venue.phone = phone
-    venue.genres = genres
-    venue.facebook_link = facebook_link
-    venue.image_link = image_link
+      venue.name = name
+      venue.city = city
+      venue.state = state
+      venue.address = address
+      venue.phone = phone
+      venue.genres = genres
+      venue.facebook_link = facebook_link
+      venue.image_link = image_link
+      venue.website = website
+      venue.seeking_talent = isseeking
+      venue.seeking_description=seeking_description
 
-    db.session.add(venue)
-    db.session.commit()
-  except:
-    error = True
-    db.session.rollback()
-    print(sys.exc_info())
-  finally:
-    db.session.close()
-  if error:
-    flash('An error occurred. Venue ' + request.form['name']+ ' could not be updated.')
-  if not error:
-    flash('Venue ' + request.form['name'] + ' was successfully updated!')
+      db.session.add(venue)
+      db.session.commit()
+    except:
+      error = True
+      db.session.rollback()
+      print(sys.exc_info())
+    finally:
+      db.session.close()
+    if error:
+      flash('An error occurred. Venue ' + request.form['name']+ ' could not be updated.')
+    if not error:
+      flash('Venue ' + request.form['name'] + ' was successfully updated!')
+  else:
+    print('form is not valid')
+    message = []
+    for field, errors in form.errors.items():
+      message.append(field + ' :, '.join(errors))
+      flash(f'Errors: {message}  ')
 
   return redirect(url_for('show_venue', venue_id=venue_id))
 
@@ -433,8 +477,12 @@ def create_artist_submission():
     genres = request.form.getlist('genres')
     facebook_link = request.form['facebook_link']
     image_link = request.form['image_link']
+    isseeking= False
+    if request.form.get('isSeeking'):
+      isseeking = True
+    seeking_description = request.form.get('seekingDesc')
 
-    artist = Artist(name=name, city=city, state=state, phone=phone, genres=genres, facebook_link=facebook_link, image_link=image_link)
+    artist = Artist(name=name, city=city, state=state, phone=phone, genres=genres, facebook_link=facebook_link, image_link=image_link, seeking_venue=isseeking, seeking_description=seeking_description)
     db.session.add(artist)
     db.session.commit()
   except: 

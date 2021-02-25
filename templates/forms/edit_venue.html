@@ -25,7 +25,8 @@
       </div>
       <div class="form-group">
           <label for="phone">Phone</label>
-          {{ form.phone(class_ = 'form-control', placeholder='xxx-xxx-xxxx', autofocus = true) }}
+          <!-- REFERENCE: https://knowledge.udacity.com/questions/354404 -->
+          {{ form.phone(class_ = 'form-control', placeholder='xxx-xxx-xxxx', type='tel', pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}", autofocus = true) }}
         </div>
       <div class="form-group">
         <label for="genres">Genres</label>
@@ -36,7 +37,23 @@
           <label for="genres">Facebook Link</label>
           {{ form.facebook_link(class_ = 'form-control', placeholder='http://', autofocus = true) }}
         </div>
-      <input type="submit" value="Edit Venue" class="btn btn-primary btn-lg btn-block">
+        <div class="form-group">
+          <label for="genres">Image Link</label>
+          {{ form.image_link(class_ = 'form-control', placeholder='http://', autofocus = true) }}
+        </div>
+        <div class="form-group">
+            <label for="genres">Website</label>
+            {{ form.website(class_ = 'form-control', placeholder='http://', autofocus = true) }}
+        </div>
+        <div class="form-group">
+          <label for="isSeeking">Looking for Venue</label>
+          {{ form.isSeeking(class_ = 'form-control', autofocus = true) }}
+        </div>
+        <div class="form-group">
+          <label for="seekingDesc">Venue Description</label>
+          {{ form.seekingDesc(class_ = 'form-control', autofocus = true) }}
+        </div>
+          <input type="submit" value="Edit Venue" class="btn btn-primary btn-lg btn-block">
     </form>
   </div>
 {% endblock %}
