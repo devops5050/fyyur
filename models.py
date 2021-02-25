@@ -7,6 +7,8 @@ db = SQLAlchemy()
 
 class Venue(db.Model):
 
+    __tablename__ = 'venue'
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     genres = db.Column(db.ARRAY(db.String()))
@@ -27,6 +29,7 @@ class Venue(db.Model):
 
 class Artist(db.Model):
 
+    __tablename__ = 'artist'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     genres = db.Column(db.ARRAY(db.String))
@@ -45,6 +48,8 @@ class Artist(db.Model):
 
 
 class Show(db.Model):
+
+    __tablename__ = 'show'
     id = db.Column(db.Integer, primary_key=True)
     artist_id = db.Column(db.Integer, db.ForeignKey(
         'artist.id'), nullable=False)
